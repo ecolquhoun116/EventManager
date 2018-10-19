@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
+<!-- We add the small piece of template header -->
+<% include ./partials/header %>
+
   <body>
+    <!-- We render title passed by parameter in routes/index.js -->
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <img src="/images/test.png" alt="<3" >
   </body>
+
+  <!-- We add the small piece of template footer -->
+  <% include ./partials/footer %>
+
 </html>
