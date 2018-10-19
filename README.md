@@ -44,4 +44,4 @@ EventManager
 
 ```
 ### Notes
-Get over routes/index.js I add some comments to explain how is the mecanishm.
+Go over routes/index.js I add some comments to explain how is the mecanishm.
