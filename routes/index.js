@@ -14,4 +14,8 @@ router.get('/', function(req, res, next) {
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Event Manager' });
 });
+
+router.get('/create-event', function(req, res, next) {
+  res.render('createEvent', { title: 'Event Manager' });
+});
 module.exports = router;

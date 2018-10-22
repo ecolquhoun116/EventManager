@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<!-- We add the small piece of template header -->
+<% include ./partials/header %>
+<% include ./partials/navbar %>
+
+  <body>
+  <h2 class="mb-5 col-xs-1 text-center">Create Event</h2>
+    <form>
+      <div class="row justify-content-center ">
+        <div class="col">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" placeholder="Event name">
+            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+          </div>
+
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" class="form-control" id="location" placeholder="Event location">
+          </div>
+
+          <label for="start_date">Date of event</label>
+          <div class="input-group date" data-provide="datepicker_start">
+              <input type="text" class="form-control" id="start_date">
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+          </div>        
+
+          <label for="end_date">End of event </label>
+          <div class="input-group date" data-provide="datepicker_end">      
+            <input type="text" class="form-control" id="end_date">
+              <div class="input-group-addon">
+                  <span class="glyphicon glyphicon-th"></span>
+              </div>
+          </div>        
+
+          <div class="form-group">
+            <label for="note">Notes</label>
+            <input type="text" class="form-control" id="note" placeholder="Event notes">
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description of the event</label>
+            <textarea class="form-control" id="description" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="type">Type of event</label>
+            <select multiple class="form-control" id="type">
+              <option value="music">Music</option>
+              <option value="sport">Sport Event</option>
+              <option value="food">Food Event</option>
+              <option value="party">Party</option>
+              <option value="festival">Festival</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+      <div class="col col-xs-1 text-center">
+        <button type="submit" class="btn btn-primary mt-2">Add event !</button>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="private">
+          <label class="form-check-label" for="private">Is it a private event ?</label>
+          <br/>
+          <label class="form-check-label mt-3" for="email_added">Add the email of your friends then !</label>
+          <input type="text" id="email_added" data-role="tagsinput" value="">
+        </div>
+      </div>
+    </form>
+    </div>
+  </body>
+
+  <!-- We add the small piece of template footer -->
+  <% include ./partials/footer %>
+
+</html>

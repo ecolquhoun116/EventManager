@@ -1,6 +1,9 @@
 $(document).ready(function() {
-  console.log("Test ! OK !")
-  
+  $('#start_date').datepicker({   
+   });
+
+  $('#end_date').datepicker({  
+    });
 });
 
 
