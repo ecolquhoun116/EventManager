@@ -59,13 +59,15 @@
           </div>
         </div>
       <div class="col col-xs-1 text-center">
-        <button type="submit" class="btn btn-primary mt-2">Add event !</button>
+        <button type="button" id="submit_event" class="btn btn-primary mt-2">Add event !</button>
         <div class="form-check">
           <input type="checkbox" class="form-check-input" id="private">
           <label class="form-check-label" for="private">Is it a private event ?</label>
           <br/>
-          <label class="form-check-label mt-3" for="email_added">Add the email of your friends then !</label>
-          <input type="text" id="email_added" data-role="tagsinput" value="">
+          <div style="display:none" id="add_email">
+            <label class="form-check-label mt-3" for="email_added">Add the email of your friends then !</label>
+            <input type="text" id="email_added" data-role="tagsinput" value="">
+          </div>
         </div>
       </div>
     </form>
