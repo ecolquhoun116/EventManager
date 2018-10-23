@@ -6,47 +6,84 @@ var db = mysql.createConnection({
   password: "admin",
   database: "event_scheduler",
   insecureAuth : true
+  
 
 });
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-function connectToDB() {
-  if(db.state === 'disconnected'){
-    db.connect(function(err) {
-      if (err) throw err;
-      console.log("DB Connected!");
-    });
-  }  
-}
+
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 function insertEvent(event) {
-  connectToDB();
-
-  var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype) \
-  values( '"+ event.title + "', '"+ event.description + "', '" + event.date_start + "', '"+ event.date_end + "',\
-  '" + event.location + "', '" + event.note +"', '" + event.public + "', '"+ event.type + "');";
-
-  db.query(sql, function (err, result) {
-    if (err) throw err;
-    let insertedEvent = result ? (result.insertId ? result.insertId : -1) : -1;
-    console.log("DB: 1 event inserted " + insertedEvent);
-
+  return new Promise((resolve, reject) => {
+    let insertedEvent;
+    var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype) \
+    values( '"+ event.title + "', '"+ event.description + "', '" + event.date_start + "', '"+ event.date_end + "',\
+    '" + event.location + "', '" + event.note +"', '" + event.public + "', '"+ event.type + "');";
+  
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      insertedEvent = result && result.insertId ? result.insertId : -1;
+      console.log("DB: 1 event inserted " + insertedEvent);
+      resolve( insertedEvent);  
+    });
   });
+  
 }
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 function getAllEvents() {
-  connectToDB();
-
-  db.query("SELECT * FROM event", function (err, result, fields) {
-    if (err) throw err;
-    return result;
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM event", function (err, result, fields) {
+      if (err) throw err;
+      resolve(result);
+    });
   });
 }
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+function insertInvitate(id_event, email, organizer_id = -1) {
+
+  let insertedInvitation;
+  getUserByEmail(email).then((user) => {
+
+    if ( user && user.uid ) {
+      var sql = "insert into invited (Useruid, Eventtid, organizer_id) \
+      values( '"+ user.uid  + "', '"+ id_event + "', '" + organizer_id + "');";
+    
+      db.query(sql, function (err, result) {
+        if (err) throw err;
+        insertedInvitation = result  ? result.insertId : -1;
+        console.log("DB: 1 invited inserted " + insertedInvitation);
+    
+      });
+    } else console.log("DB: invitation insertion failed !");
+  });
+
+  
+
+}
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+function getUserByEmail(email) {
+  return new Promise((resolve, reject) => {
+    let user;
+    let sql = "select * from user where email = '" + email + "'";
+  
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      user = result && result[0] ? result[0] : null;
+      resolve(user);
+    });
+  })
+  
+
+}
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 module.exports = {
   insertEvent,
-  getAllEvents
+  getAllEvents,
+  insertInvitate,
+  getUserByEmail
 }

@@ -27,17 +27,28 @@ router.get('/create-event', function(req, res, next) {
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/submit-event', function(req, res, next) {
-  var event = req.body;
-  var emails = req.body['emails[]'];
+  let event = req.body;
+  let emails = req.body['emails[]'];
+  let id_event;
+
   if (!Array.isArray(emails)) {
     emails = [ emails];
   }
-  for (let i = 0 ; i < emails.length; i++) { 
-    mailer.senEmail(email);
+
+  try {
+    db.insertEvent(event).then((id_event) => {
+      for (let i = 0 ; i < emails.length; i++) { 
+        mailer.senEmail(emails[i]);
+        db.insertInvitate(id_event, emails[i]);
+      }
+    });
+  } catch (e) {
+    console.log(e);
   }
-  db.insertEvent(event);
+  
   res.render('api', { title: 'Event Manager' });
 });
+
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 router.get('/mail', function(req, res, next) {
   mailer.senEmail("");
