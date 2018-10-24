@@ -56,4 +56,8 @@ router.get('/mail', function(req, res, next) {
   res.render('api', { title: 'Event Manager' });
 });
 
+router.get('/view-events', function(req, res, next) {
+  res.render('feed', { title: 'View Events' });
+});
+
 module.exports = router;
