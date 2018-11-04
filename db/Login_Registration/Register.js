@@ -1,26 +1,36 @@
-exports.register = function(req,res){
-  // console.log("req",req.body);
-  var today = new Date();
-  var users={
-    "first_name":req.body.first_name,
-    "last_name":req.body.last_name,
-    "email":req.body.email,
-    "password":req.body.password,
-    "created":today,
-    "modified":today
-  }
-  connection.query('INSERT INTO users SET ?',users, function (error, results, fields) {
-  if (error) {
-    console.log("error ocurred",error);
-    res.send({
-      "code":400,
-      "failed":"error ocurred"
-    })
-  }else{
-    console.log('The solution is: ', results);
-    res.send({
-      "code":200,
-      "success":"user registered sucessfully"
-        });
-  }
-  });
+var express        =         require("express");
+var bodyParser     =         require("body-parser");
+var app            =         express();
+const mysql = require('mysql');
+
+const con = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'wssurams',
+  database: 'EventManager',
+  insecureAuth : true
+});
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.post('/login#',function(req,res){
+  var first_name=req.body.firstname;
+  var last_name=req.body.lastname;
+  var email=req.body.email;
+  var password=req.body.password;
+  console.log(email);
+	con.connect(function(err) {
+	if (err) throw err;
+		var sql="INSERT INTO users (email,firstname, lastname, password) VALUES ('"+email+"', '"+first_name+"', '"+last_name+"', '"+password+"')"
+		con.query(sql, function(err, result)
+		{
+			if (err) throw err;
+			console.log("1 record inserted, ID: " + result.insertId);
+		});
+		con. close;
+	  });
+  res.end("yes");
+});
+
+
+
