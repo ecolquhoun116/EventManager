@@ -3,8 +3,8 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "admin",
-  database: "event_scheduler",
+  password: "wssurams",
+  database: "eventmanager",
   insecureAuth : true
   
 
@@ -77,11 +77,22 @@ function getUserByEmail(email) {
       resolve(user);
     });
   })
-  
-
 }
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+function registerUser(event)
+{
+	return new Promise((resolve, reject) => {
+	var sql = "insert into users (email, firstname, lastname, password) \
+    values( '"+ event.email + "', '"+ event.firstname + "', '" + event.lastname + "', '"+ event.password + "');";
+    db.query(sql, function (err, result, fields) {
+      if (err) throw err;
+      resolve(result);
+    });
+  });
+}
 module.exports = {
+  registerUser,
   insertEvent,
   getAllEvents,
   insertInvitate,

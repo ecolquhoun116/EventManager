@@ -7,24 +7,11 @@
 
 <body>
   <script>
-	function toggleMe(noneActiveSection, activeSection){
-		var nActive=document.getElementById(noneActiveSection);
-		var activeS=document.getElementById(activeSection);
-		if (nActive.style.display === "none") {
-			nActive.style.display = "block";
-			activeS.style.display="none";
-		} else {
-			nActive.style.display = "none";
-			activeS.style.display = "block";
-		}
-	}
 	function login() {
-      const firstname = $("#inputFirstName").val();
-	  const lastname=	$("#inputLastName").val();
-	  const email = $("#inputEmail2").val();
-      const password = $("#inputPassword1").val();
-		//print(password);
-      $.post("http://localhost:3000/login", { firstname: firstname, lastname: lastname, email: email, password: password }, (data, status) => {
+	  const email = $("#inputEmail1").val();
+      const password = $("#inputPassword").val();
+	 
+      $.post("/login", ({  email: email, password: password }), (data, status) => {
 
         if (status === 'success')
           alert(`Login success\n${data}`);
@@ -32,13 +19,23 @@
           alert("Login denied");
 
       });
+	  function register()
+	  {
+		$.post("/login", {reg: "/register" }, (data, status) => {
+
+        if (status === 'success')
+          alert(`Login success\n${data}`);
+        else
+          alert("Login denied");
+      });
+	  }
     }
 </script>
     <!-- We render title passed by parameter in routes/index.js -->
 <section class="container-fluid bg" id="section1" style="display:block;" >
 	<section class="row justify-content-center">
 		<section class="col-12 col-md-6">
-			<form class="form-container">
+			<form class="form-container" onsubmit="login()">
 			 <div class="form-group">
 				<img src="/images/avatar.png" class="avatar">
 				<h1>Member Login</h1>
@@ -57,39 +54,7 @@
 			  <button type="submit" class="btn btn-primary btn-block">Submit</button>
 			  <div>
 					<label> Dont have an Account? </label>
-					<a href="#" onclick="toggleMe('section2', 'section1')" class="center_Text">Register</a>
-			  </div>
-			</form>			
-		</section>
-	</section>
-</section>
-
-
-<section class="container-fluid bg" id="section2" style="display:none;">
-	<section class="row justify-content-center">
-		<section class="col-12 col-md-6">
-			<form class="form-container" onsubmit="login()">
-			 <div class="form-group">
-				<h1>New Member Registration</h1>
-				<label> First Name:</label>
-				<input type="firstname" class="form-control" id="inputFirstName" aria-describedby="emailHelp" placeholder="Enter First Name">
-
-				<label> Last Name:</label>
-				<input type="lastname" class="form-control" id="InputLastName" aria-describedby="emailHelp" placeholder="Enter Last Name">	
-				<label for="inputEmail1">Email address:</label>
-				<input type="email" class="form-control" id="inputEmail2" aria-describedby="emailHelp" placeholder="Enter email">
-			  </div>
-			  <div class="form-group">
-				<label for="InputPassword1">Password:</label>
-				<input type="password" class="form-control" id="inputPassword1" placeholder="Password">
-				
-				<label for="InputPassword2">Confirm Password:</label>
-				<input type="password" class="form-control" id="InputPassword2" placeholder="Password">
-			  </div>
-			  <button type="submit" class="btn btn-primary btn-block">Submit</button>
-			  <div>
-				<label>Already have an account? </label> 
-				<a href="/login" onclick="toggleMe('section1', 'section2')" class="center_Text">Login</a>
+					<a href="/register"  onclick="register()" class="center_Text">Register</a>
 			  </div>
 			</form>			
 		</section>

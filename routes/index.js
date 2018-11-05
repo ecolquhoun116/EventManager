@@ -24,6 +24,9 @@ router.get('/create-event', function(req, res, next) {
   res.render('createEvent', { title: 'Event Manager' });
 });
 
+router.get('/register', function(req, res, next) {
+  res.render('register', { title: 'Register' });
+});
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/submit-event', function(req, res, next) {
@@ -49,6 +52,14 @@ router.post('/submit-event', function(req, res, next) {
   res.render('api', { title: 'Event Manager' });
 });
 
+router.post('/login', function(req, res, next) {
+
+});
+router.post('/register', function(req, res, next) {
+	let event =req.body;
+	db.registerUser(event);
+	res.render('login', { title: 'Event Manager-Login' });
+});
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 router.get('/mail', function(req, res, next) {
   mailer.senEmail("");
