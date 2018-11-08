@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<!-- We add the small piece of template header -->
+<% include ./partials/header %>
+<% include ./partials/navbar %>
+
+  <body>
+      <!-- We render title passed by parameter in routes/index.js -->
+      <h1><%= title %></h1>
+      
+    <div class="container">
+    <div class="row">
+        <div class="col-sm">
+        <h6> <%= user.name %></h6>
+        <p><b>Email:</b> <%= user.email %></p>
+        </div>
+        
+        
+           
+
+    </div>
+      <div class="row mt-5">
+        <div class="col-sm">
+           <h2>My created events</h2>
+           <% createdEvent.forEach(function(event) { %>
+                <li><%= event.title %></li>
+            <% }); %>
+        </div>
+        <div class="col-sm">
+           <h2>My participating events</h2>
+           <% participateEvent.forEach(function(event) { %>
+                <li><%= event.title %></li>
+            <% }); %>
+        </div>
+        
+      </div>
+    </div>
+
+    
+  </body>
+
+  <!-- We add the small piece of template footer -->
+
+  <% include ./partials/footer %>
+
+</html>

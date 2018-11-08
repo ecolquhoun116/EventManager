@@ -23,10 +23,25 @@ router.get('/create-event', function(req, res, next) {
 
   res.render('createEvent', { title: 'Event Manager' });
 });
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.get('/register', function(req, res, next) {
   res.render('register', { title: 'Register' });
 });
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+router.get('/profile', function(req, res, next) {
+  let email = "jean@pas.fr";
+  db.getUserByEmail(email).then((user) => {
+    db.getMyCreatedEvents(user.uid).then((result_created) => {
+      db.getParticipatingEvent(user.uid).then((result_participate) => {
+        res.render('profile', { title: 'My profile', user : user, createdEvent : result_created, participateEvent : result_participate });
+      })
+    })
+  });
+});
+
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/submit-event', function(req, res, next) {
@@ -51,10 +66,20 @@ router.post('/submit-event', function(req, res, next) {
   
   res.render('api', { title: 'Event Manager' });
 });
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+router.post('/update', function(req, res, next) {
+	let user = req.body;
+
+});
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/login', function(req, res, next) {
 
 });
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 router.post('/register', function(req, res, next) {
 	let event =req.body;
 	db.registerUser(event);
@@ -66,6 +91,7 @@ router.get('/mail', function(req, res, next) {
 
   res.render('api', { title: 'Event Manager' });
 });
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.get('/view-events', function(req, res, next) {
   res.render('feed', { title: 'View Events' });

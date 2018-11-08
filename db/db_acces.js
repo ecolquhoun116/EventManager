@@ -3,8 +3,8 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "wssurams",
-  database: "eventmanager",
+  password: "admin",
+  database: "event_scheduler",
   insecureAuth : true
   
 
@@ -91,10 +91,40 @@ function registerUser(event)
     });
   });
 }
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+function getMyCreatedEvents(orgId)
+{
+	return new Promise((resolve, reject) => {
+	var sql = "select * from event e where orgid = " + orgId;
+    db.query(sql, function (err, result, fields) {
+      if (err) throw err;      
+      resolve(result);
+    });
+  });
+}
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+function getParticipatingEvent(userId)
+{
+	return new Promise((resolve, reject) => {
+	var sql = "select * from event e, participate p where p.eventtid = e.tid and p.useruid = " + userId;
+    db.query(sql, function (err, result, fields) {
+      if (err) throw err;      
+      resolve(result);
+    });
+  });
+}
+
+
 module.exports = {
   registerUser,
   insertEvent,
   getAllEvents,
   insertInvitate,
-  getUserByEmail
+  getUserByEmail,
+  getMyCreatedEvents,
+  getParticipatingEvent
 }
