@@ -3,7 +3,6 @@
 <!-- We add the small piece of template header -->
 
   <% include ./partials/header %>
-  <% include ./partials/navbar %>
 
 <body>
   <script>
@@ -29,8 +28,8 @@
     }
 </script>
     <!-- We render title passed by parameter in routes/index.js -->
-<section class="container-fluid bg" id="section2">
-	<section class="row justify-content-center">
+<section class="container-fluid bg " id="section2">
+	<section class="row justify-content-center pt-0">
 		<section class="col-12 col-md-6">
 			<form class="form-container" onsubmit="login()">
 			 <div class="form-group">
@@ -53,7 +52,7 @@
 			  <button type="submit" class="btn btn-primary btn-block">Submit</button>
 			  <div>
 				<label>Already have an account? </label> 
-				<a href=""  class="center_Text">Login</a>
+				<a href="/login"  class="center_Text">Login</a>
 			  </div>
 			</form>			
 		</section>
@@ -68,6 +67,5 @@
 </body>
 
   <!-- We add the small piece of template footer -->
-  <% include ./partials/footer %>
 
 </html>

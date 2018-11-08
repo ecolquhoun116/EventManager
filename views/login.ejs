@@ -3,7 +3,7 @@
 <!-- We add the small piece of template header -->
 
   <% include ./partials/header %>
-  <% include ./partials/navbar %>
+
 
 <body>
   <script>
@@ -32,9 +32,9 @@
     }
 </script>
     <!-- We render title passed by parameter in routes/index.js -->
-<section class="container-fluid bg" id="section1" style="display:block;" >
-	<section class="row justify-content-center">
-		<section class="col-12 col-md-6">
+<section class="container-fluid bg " id="section1" >
+	<section class="row justify-content-center pt-0">
+		<section class="col-12 col-md-6 pt-1">
 			<form class="form-container" onsubmit="login()">
 			 <div class="form-group">
 				<img src="/images/avatar.png" class="avatar">
@@ -70,6 +70,5 @@
 </body>
 
   <!-- We add the small piece of template footer -->
-  <% include ./partials/footer %>
 
 </html>
