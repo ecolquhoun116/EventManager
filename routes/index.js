@@ -39,7 +39,7 @@ router.get('/profile', function(req, res, next) {
         res.render('profile', { title: 'My profile', user : user, createdEvent : result_created, participateEvent : result_participate });
       })
     })
-  });
+  }).catch();
 });
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -94,7 +94,10 @@ router.get('/mail', function(req, res, next) {
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.get('/view-events', function(req, res, next) {
-  res.render('feed', { title: 'View Events' });
+  db.getAllEvents().then( function (dbEvents) {
+      res.render('feed', { title: 'View Events', eachEvent : dbEvents});
+  });
 });
+
 
 module.exports = router;
