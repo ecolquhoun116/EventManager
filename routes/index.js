@@ -16,7 +16,9 @@ router.get('/', function(req, res, next) {
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Event Manager' });
 });
-
+router.get('/feed', function(req, res, next) {
+  res.render('feed', { title: 'Event Manager-feed' });
+});
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 router.get('/create-event', function(req, res, next) {
   // console.log( db.getAllEvents()); return all events in an array
@@ -53,12 +55,13 @@ router.post('/submit-event', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-
+	let event =req.body;
+	db.userLogin(event);
 });
 router.post('/register', function(req, res, next) {
 	let event =req.body;
 	db.registerUser(event);
-	res.render('login', { title: 'Event Manager-Login' });
+
 });
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 router.get('/mail', function(req, res, next) {

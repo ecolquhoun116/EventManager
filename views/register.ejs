@@ -16,15 +16,13 @@
 	  if(password_1==(password_2))
 	  {
       $.post("/register", { firstname: firstname, lastname: lastname, email: email, password: password_1 }, (data, status) => {
-
         if (status === 'success')
-          alert(`Login success\n${data}`);
+          //alert(`Login success\n${data}`);
         else
-          alert("Login denied");
-
+          //alert("Login denied");
       });
 	  }
-	  document.location.href="/login";
+	  
     }
 </script>
     <!-- We render title passed by parameter in routes/index.js -->
@@ -49,7 +47,7 @@
 				<label for="InputPassword2">Confirm Password:</label>
 				<input type="password" class="form-control" id="inputPassword2" placeholder="Password" />
 			  </div>
-			  <button type="submit" class="btn btn-primary btn-block">Submit</button>
+			  <a href="/login" type="submit" class="btn btn-primary btn-block" >Submit</a>
 			  <div>
 				<label>Already have an account? </label> 
 				<a href="/login"  class="center_Text">Login</a>

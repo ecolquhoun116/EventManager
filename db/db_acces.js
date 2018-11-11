@@ -91,6 +91,17 @@ function registerUser(event)
     });
   });
 }
+function userLogin(event)
+{
+	return new Promise((resolve, reject) => {
+	var sql = "select * from users where email= '"+ event.email +"' +'"event.password"'";
+    values( '"+ event.email + "', '"+ event.firstname + "', '" + event.lastname + "', '"+ event.password + "');";
+    db.query(sql, function (err, result, fields) {
+      if (err) throw err;
+      resolve(result);
+    });
+  });
+}
 module.exports = {
   registerUser,
   insertEvent,
