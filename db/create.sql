@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS `User`;
 DROP TABLE IF EXISTS Participate;
 DROP TABLE IF EXISTS Invited;
 CREATE TABLE Event (
-  tid         varchar(50) NOT NULL, 
+  tid         int(10) NOT NULL, 
   title       varchar(50), 
   description varchar(255), 
   date_start  timestamp NOT NULL, 
@@ -28,12 +28,12 @@ CREATE TABLE `User` (
   email_verified tinyint(1), 
   PRIMARY KEY (uid));
 CREATE TABLE Participate (
-  Useruid  varchar(50) NOT NULL, 
+  Useruid  int(10) NOT NULL, 
   Eventtid int(10) NOT NULL, 
   PRIMARY KEY (Useruid, 
   Eventtid));
 CREATE TABLE Invited (
-  Useruid      varchar(50) NOT NULL, 
+  Useruid      int(10) NOT NULL, 
   Eventtid     int(10) NOT NULL, 
   organizer_id int(10), 
   PRIMARY KEY (Useruid, 
