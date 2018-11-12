@@ -16,11 +16,12 @@ router.get('/', function(req, res, next) {
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Event Manager' });
 });
-
+router.get('/feed', function(req, res, next) {
+  res.render('feed', { title: 'Event Manager-feed' });
+});
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 router.get('/create-event', function(req, res, next) {
   // console.log( db.getAllEvents()); return all events in an array
-
   res.render('createEvent', { title: 'Event Manager' });
 });
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -76,14 +77,33 @@ router.post('/update', function(req, res, next) {
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/login', function(req, res, next) {
-
+	let event =req.body;
+	db.userLogin(event).then((right_user)=>
+	{
+		if(right_user==true)
+		{
+			res.status(200).send(right_user);
+		}else
+		{
+			res.status(200).send(right_user);
+		}
+	});
+	
 });
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/register', function(req, res, next) {
 	let event =req.body;
-	db.registerUser(event);
-	res.render('login', { title: 'Event Manager-Login' });
+	db.registerUser(event).then((addUser)=>{
+		if(addUser==true)
+		{
+			res.status(200).send(addUser);
+		}else
+		{
+			res.status(200).send(addUser);
+		}
+	});
+
 });
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 router.get('/mail', function(req, res, next) {

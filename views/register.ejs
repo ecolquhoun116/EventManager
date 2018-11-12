@@ -6,26 +6,8 @@
 
 <body>
   <script>
-	function login() {
-      const firstname = $("#inputFirstName").val();
-	  const lastname=	$("#inputLastName").val();
-	  const email = $("#inputEmail2").val();
-      const password_1 = $("#inputPassword1").val();
-	  const password_2= $("#inputPassword2").val();
-	  alert(password_1==(password_2));
-	  if(password_1==(password_2))
-	  {
-      $.post("/register", { firstname: firstname, lastname: lastname, email: email, password: password_1 }, (data, status) => {
 
-        if (status === 'success')
-          alert(`Login success\n${data}`);
-        else
-          alert("Login denied");
-
-      });
-	  }
-	  document.location.href="/login";
-    }
+	  
 </script>
     <!-- We render title passed by parameter in routes/index.js -->
 <section class="container-fluid bg " id="section2">
@@ -34,22 +16,23 @@
 			<form class="form-container" onsubmit="login()">
 			 <div class="form-group">
 				<h1>New Member Registration</h1>
+				<p style="color:red; display: none; text-align: center;" id="err">Use A Different Email Address or Login <p> 
 				<label> First Name:</label>
 				<input type="firstname" class="form-control" id="inputFirstName" aria-describedby="emailHelp" placeholder="Enter First Name" />
 
 				<label> Last Name:</label>
 				<input type="lastname" class="form-control" id="inputLastName" aria-describedby="emailHelp" placeholder="Enter Last Name" />	
-				<label for="inputEmail1">Email address:</label>
-				<input type="email" class="form-control" id="inputEmail2" aria-describedby="emailHelp" placeholder="Enter email" />
+				<label for="inputEmail" id="em">Email address:</label>
+				<input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" />
 			  </div>
 			  <div class="form-group">
-				<label for="InputPassword1">Password:</label>
-				<input type="password" class="form-control" id="inputPassword1" placeholder="Password" />
+				<label for="InputPassword">Password:</label>
+				<input type="password" class="form-control" id="inputPassword" placeholder="Password" />
 				
-				<label for="InputPassword2">Confirm Password:</label>
-				<input type="password" class="form-control" id="inputPassword2" placeholder="Password" />
+				<label for="InputPassword_Comfirm">Confirm Password:</label>
+				<input type="password" class="form-control" id="inputPassword_Comfirm" placeholder="Password" />
 			  </div>
-			  <button type="submit" class="btn btn-primary btn-block">Submit</button>
+			  <a type="submit" id="register" class="btn btn-primary btn-block" >Submit</a>
 			  <div>
 				<label>Already have an account? </label> 
 				<a href="/login"  class="center_Text">Login</a>
@@ -59,7 +42,24 @@
 	</section>
 </section>
 
+<script src="/javascripts/jquery.min.js" defer></script>
+  <script src="/javascripts/moment.js" defer></script>
+  <script src="/javascripts/main.js" defer></script>
+  <script src="/javascripts/datepicker.js" defer></script>
+  <script src="/javascripts/tagsinput.js" defer></script>
 
+  <!-- Bootstrap core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js" defer></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js" defer></script>
+    <!-- Contact Form JavaScript -->
+    <script src="/javascripts/jqBootstrapValidation.js" defer></script>
+    <script src="/javascripts/contact_me.js" defer></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="/javascripts/freelancer.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

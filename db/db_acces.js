@@ -82,12 +82,48 @@ function getUserByEmail(email) {
 
 function registerUser(event)
 {
+	let email=event.email;
 	return new Promise((resolve, reject) => {
-	var sql = "insert into users (email, firstname, lastname, password) \
-    values( '"+ event.email + "', '"+ event.firstname + "', '" + event.lastname + "', '"+ event.password + "');";
+	userLogin(event).then((hasUser)=>{
+		var sql = "select * from user where email= '"+ event.email +"'";
+		db.query(sql, function (err, result, fields) {
+		user = result && result[0] ? result[0] : null;
+		if (err) throw err;
+		if(hasUser || user!=null &&(user.email===email))
+		{
+			resolve(false);
+		}else
+		{
+
+			var sql = "insert into user (firstname, lastname, email, password, email_verified) \
+			values('"+ event.firstname + "', '" + event.lastname + "','"+event.email+"', '"+ event.password + "', '"+0+"');";
+			db.query(sql, function (err, result, fields) {
+			if (err) throw err;
+			resolve(true);});
+			
+		}
+		});
+	});
+
+    });
+}
+function userLogin(event)
+{
+	return new Promise((resolve, reject) => {
+	let isMember;
+	if(event.email=="" || event.password=="") resolve(false);
+	var sql = "select * from user where email= '"+ event.email +"' and password='"+event.password+"'";
     db.query(sql, function (err, result, fields) {
       if (err) throw err;
-      resolve(result);
+	  user = result && result[0] ? result[0] : null;
+	  if(user==null ){
+	  isMember=false;}
+	  else
+	  {	
+		if((user.email===(event.email))&& (user.password===(event.password)))
+			isMember=true;
+	  }
+	  resolve(isMember);
     });
   });
 }
@@ -126,5 +162,6 @@ module.exports = {
   insertInvitate,
   getUserByEmail,
   getMyCreatedEvents,
-  getParticipatingEvent
+  getParticipatingEvent,
+  userLogin
 }

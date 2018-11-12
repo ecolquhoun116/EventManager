@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS `User`;
 DROP TABLE IF EXISTS Participate;
 DROP TABLE IF EXISTS Invited;
 CREATE TABLE Event (
-  tid         int(10) NOT NULL AUTO_INCREMENT, 
+  tid         int(10) NOT NULL, 
   title       varchar(50), 
   description varchar(255), 
   date_start  timestamp NOT NULL, 
@@ -20,9 +20,10 @@ CREATE TABLE Event (
   etype       varchar(255), 
   PRIMARY KEY (tid));
 CREATE TABLE `User` (
-  uid            int(10) NOT NULL AUTO_INCREMENT, 
-  name           varchar(50) UNIQUE, 
-  email          varchar(50) UNIQUE, 
+  uid			 int(10) NOT NULL auto_increment,
+  firstname      varchar(50) UNIQUE, 
+  lastname		 varchar(50) unique,
+  email          varchar(50) NOT NULL,
   password       varchar(255), 
   email_verified tinyint(1), 
   PRIMARY KEY (uid));
