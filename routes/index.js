@@ -3,24 +3,25 @@ var router = express.Router();
 var db = require("../db/db_acces");
 var mailer = require('../mail/mail');
 
+
 /* GET home page. 
 When the user go on the root on the website
 We render the template index (from views directory)
 And we pass in parameter to the page the variable title.
 */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Event Manager' });
+  res.render('index', { title: 'Event Manager', home : true });
 });
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Event Manager' });
 });
-router.get('/feed', function(req, res, next) {
+router.get('/feed', isLoged, function(req, res, next) {
   res.render('feed', { title: 'Event Manager-feed' });
 });
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-router.get('/create-event', function(req, res, next) {
+router.get('/create-event', isLoged, function(req, res, next) {
   // console.log( db.getAllEvents()); return all events in an array
   res.render('createEvent', { title: 'Event Manager' });
 });
@@ -32,8 +33,12 @@ router.get('/register', function(req, res, next) {
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.get('/profile', function(req, res, next) {
-  let email = "jean@pas.fr";
+router.get('/profile', isLoged, function(req, res, next) {
+  let sess = req.session;
+  let email = "";
+  if(sess.email) { 
+    email = sess.email;
+  }
   db.getUserByEmail(email).then((user) => {
     db.getMyCreatedEvents(user.uid).then((result_created) => {
       db.getParticipatingEvent(user.uid).then((result_participate) => {
@@ -45,9 +50,12 @@ router.get('/profile', function(req, res, next) {
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.post('/submit-event', function(req, res, next) {
+router.post('/submit-event', isLoged, function(req, res, next) {
   let event = req.body;
   let emails = req.body['emails[]'];
+  let sess = req.session;
+  
+  let user = sess.user;
   let id_event;
 
   if (!Array.isArray(emails)) {
@@ -55,7 +63,7 @@ router.post('/submit-event', function(req, res, next) {
   }
 
   try {
-    db.insertEvent(event).then((id_event) => {
+    db.insertEvent(event, user.uid).then((id_event) => {
       for (let i = 0 ; i < emails.length; i++) { 
         mailer.senEmail(emails[i]);
         db.insertInvitate(id_event, emails[i]);
@@ -82,7 +90,14 @@ router.post('/login', function(req, res, next) {
 	{
 		if(right_user==true)
 		{
-			res.status(200).send(right_user);
+      var sess = req.session;
+      sess.email=req.body.email;
+      db.getUserByEmail(sess.email).then((user) => {
+        sess.user = user;
+  			res.status(200).send(right_user);
+      }).catch(()=> {
+        res.status(200).send(right_user);
+      });
 		}else
 		{
 			res.status(200).send(right_user);
@@ -111,10 +126,29 @@ router.get('/mail', function(req, res, next) {
 
   res.render('api', { title: 'Event Manager' });
 });
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+router.get('/logout', function(req, res, next) {
+  req.session.destroy((err) => {
+    if(err) {
+      console.log(err);
+    } else {
+      res.redirect('/');
+    }
+  });
+});
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.get('/view-events', function(req, res, next) {
   res.render('feed', { title: 'View Events' });
 });
+
+function isLoged(req, res, next) {
+  if ( !(req.session && req.session.user)) {
+    res.redirect('/login');
+  } else {
+    next();
+  }
+}
 
 module.exports = router;

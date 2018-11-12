@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS `User`;
 DROP TABLE IF EXISTS Participate;
 DROP TABLE IF EXISTS Invited;
 CREATE TABLE Event (
-  tid         int(10) NOT NULL, 
+  tid         int(10) NOT NULL auto_increment, 
   title       varchar(50), 
   description varchar(255), 
   date_start  timestamp NOT NULL, 
@@ -17,7 +17,8 @@ CREATE TABLE Event (
   location    varchar(255), 
   notes       varchar(255), 
   `public`    tinyint(1), 
-  etype       varchar(255), 
+  etype       varchar(255),
+  orgid       int(10), 
   PRIMARY KEY (tid));
 CREATE TABLE `User` (
   uid			 int(10) NOT NULL auto_increment,

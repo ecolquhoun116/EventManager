@@ -35,10 +35,16 @@ $('#submit_event').click(function() {
   }
   
   if ( event.title === "" && event.date_start ) {
-    alert("You need to add title and date to start !");
+    $.alert({
+        title: 'Wait !',
+        content: 'You need to add title and date to start.',
+    });
   } else {
     $.post('submit-event', event, function(data) {
-      // alert("The paragraph was clicked.");  
+      $.alert({
+          title: 'Done !',
+          content: 'Your event has been added.',
+      });
     });
   }
 });

@@ -2,19 +2,17 @@
 <html>
 <!-- We add the small piece of template header -->
 <% include ./partials/header %>
-<% include ./partials/navbar %>
+<% include ./partials/home_navbar %>
 
   <body>
       <!-- We render title passed by parameter in routes/index.js -->
-      <h1><%= title %></h1>
-      <p>Welcome to <%= title %></p>
-      <img src="/images/test.png" alt="<3" >
+      <img src="/images/info.png" id="info" >
     </div>
 
   </body>
 
   <!-- We add the small piece of template footer -->
-
+  <div class="container mt-5">
   <% include ./partials/footer %>
 
 </html>

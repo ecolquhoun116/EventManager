@@ -14,12 +14,12 @@ var db = mysql.createConnection({
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-function insertEvent(event) {
+function insertEvent(event, orgId) {
   return new Promise((resolve, reject) => {
     let insertedEvent;
-    var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype) \
+    var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype, orgid) \
     values( '"+ event.title + "', '"+ event.description + "', '" + event.date_start + "', '"+ event.date_end + "',\
-    '" + event.location + "', '" + event.note +"', '" + event.public + "', '"+ event.type + "');";
+    '" + event.location + "', '" + event.note +"', '" + event.public + "', '"+ event.type + "', '"+ orgId+"');";
   
     db.query(sql, function (err, result) {
       if (err) throw err;
