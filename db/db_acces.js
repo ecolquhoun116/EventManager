@@ -94,8 +94,13 @@ function registerUser(event)
 			resolve(false);
 		}else
 		{
-			var sql = "insert into user (email, firstname, lastname, password, email_verified) \
-			values('"+ event.email + "', '"+ event.firstname + "', '" + event.lastname + "', '"+ event.password + "', '"+0+"');";
+			var uid;
+			db.query("SELECT COUNT(*) FROM user;", function (err, result, fields) {
+			if (err) throw err;
+			uid=(result.length-1)+1;
+			console.log((result.length-1)+1);});
+			var sql = "insert into user (uid, firstname, lastname, email, password, email_verified) \
+			values('"+ uid + "', '"+ event.firstname + "', '" + event.lastname + "','"+event.email+"', '"+ event.password + "', '"+0+"');";
 			db.query(sql, function (err, result, fields) {
 			if (err) throw err;
 			resolve(true);});

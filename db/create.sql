@@ -20,12 +20,13 @@ CREATE TABLE Event (
   etype       varchar(255), 
   PRIMARY KEY (tid));
 CREATE TABLE `User` (
-  email          varchar(50) NOT NULL, 
+  uid			 int(10) NOT NULL auto_increment,
   firstname      varchar(50) UNIQUE, 
   lastname		 varchar(50) unique,
+  email          varchar(50) NOT NULL,
   password       varchar(255), 
   email_verified tinyint(1), 
-  PRIMARY KEY (email));
+  PRIMARY KEY (uid));
 CREATE TABLE Participate (
   Useruid  varchar(50) NOT NULL, 
   Eventtid int(10) NOT NULL, 
@@ -37,7 +38,7 @@ CREATE TABLE Invited (
   organizer_id int(10), 
   PRIMARY KEY (Useruid, 
   Eventtid));
-ALTER TABLE Participate ADD INDEX FKParticipat373269 (Useruid), ADD CONSTRAINT FKParticipat373269 FOREIGN KEY (Useruid) REFERENCES `User` (email);
+ALTER TABLE Participate ADD INDEX FKParticipat373269 (Useruid), ADD CONSTRAINT FKParticipat373269 FOREIGN KEY (Useruid) REFERENCES `User` (uid);
 ALTER TABLE Participate ADD INDEX FKParticipat441037 (Eventtid), ADD CONSTRAINT FKParticipat441037 FOREIGN KEY (Eventtid) REFERENCES Event (tid);
-ALTER TABLE Invited ADD INDEX FKInvited20973 (Useruid), ADD CONSTRAINT FKInvited20973 FOREIGN KEY (Useruid) REFERENCES `User` (email);
+ALTER TABLE Invited ADD INDEX FKInvited20973 (Useruid), ADD CONSTRAINT FKInvited20973 FOREIGN KEY (Useruid) REFERENCES `User` (uid);
 ALTER TABLE Invited ADD INDEX FKInvited46795 (Eventtid), ADD CONSTRAINT FKInvited46795 FOREIGN KEY (Eventtid) REFERENCES Event (tid);
