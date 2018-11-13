@@ -3,7 +3,11 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
   host: "localhost",
   user: "root",
+<<<<<<< HEAD
   password: "MySQL",
+=======
+  password: "wssurams",
+>>>>>>> 8f8645213cc1392afc4496735c4833aab7931757
   database: "event_scheduler",
   insecureAuth : true
   
@@ -14,12 +18,12 @@ var db = mysql.createConnection({
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-function insertEvent(event) {
+function insertEvent(event, orgId) {
   return new Promise((resolve, reject) => {
     let insertedEvent;
-    var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype) \
+    var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype, orgid) \
     values( '"+ event.title + "', '"+ event.description + "', '" + event.date_start + "', '"+ event.date_end + "',\
-    '" + event.location + "', '" + event.note +"', '" + event.public + "', '"+ event.type + "');";
+    '" + event.location + "', '" + event.note +"', '" + event.public + "', '"+ event.type + "', '"+ orgId+"');";
   
     db.query(sql, function (err, result) {
       if (err) throw err;
@@ -82,12 +86,48 @@ function getUserByEmail(email) {
 
 function registerUser(event)
 {
+	let email=event.email;
 	return new Promise((resolve, reject) => {
-	var sql = "insert into users (email, firstname, lastname, password) \
-    values( '"+ event.email + "', '"+ event.firstname + "', '" + event.lastname + "', '"+ event.password + "');";
+	userLogin(event).then((hasUser)=>{
+		var sql = "select * from user where email= '"+ event.email +"'";
+		db.query(sql, function (err, result, fields) {
+		user = result && result[0] ? result[0] : null;
+		if (err) throw err;
+		if(hasUser || user!=null &&(user.email===email))
+		{
+			resolve(false);
+		}else
+		{
+
+			var sql = "insert into user (firstname, lastname, email, password, email_verified) \
+			values('"+ event.firstname + "', '" + event.lastname + "','"+event.email+"', '"+ event.password + "', '"+0+"');";
+			db.query(sql, function (err, result, fields) {
+			if (err) throw err;
+			resolve(true);});
+			
+		}
+		});
+	});
+
+    });
+}
+function userLogin(event)
+{
+	return new Promise((resolve, reject) => {
+	let isMember;
+	if(event.email=="" || event.password=="") resolve(false);
+	var sql = "select * from user where email= '"+ event.email +"' and password='"+event.password+"'";
     db.query(sql, function (err, result, fields) {
       if (err) throw err;
-      resolve(result);
+	  user = result && result[0] ? result[0] : null;
+	  if(user==null ){
+	  isMember=false;}
+	  else
+	  {	
+		if((user.email===(event.email))&& (user.password===(event.password)))
+			isMember=true;
+	  }
+	  resolve(isMember);
     });
   });
 }
@@ -126,5 +166,6 @@ module.exports = {
   insertInvitate,
   getUserByEmail,
   getMyCreatedEvents,
-  getParticipatingEvent
+  getParticipatingEvent,
+  userLogin
 }

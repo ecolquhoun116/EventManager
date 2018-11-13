@@ -35,12 +35,66 @@ $('#submit_event').click(function() {
   }
   
   if ( event.title === "" && event.date_start ) {
-    alert("You need to add title and date to start !");
+    $.alert({
+        title: 'Wait !',
+        content: 'You need to add title and date to start.',
+    });
   } else {
     $.post('submit-event', event, function(data) {
-      // alert("The paragraph was clicked.");  
+      $.alert({
+          title: 'Done !',
+          content: 'Your event has been added.',
+      });
     });
   }
-})
+});
+
+/*Login Authentication*/
+$('#login').click(function(){
+	  const email = $("#inputEmail1").val();
+      const password = $("#inputPassword").val();
+      $.post("/login", ({email: email, password: password }), function(data, status) {
+        if (data){
+			window.open("/feed","_self");
+			document.getElementById("errs").style["display"] ="none"; 
+			document.getElementById("em_l").style["color"]="green";
+		document.getElementById("pd_l").style["color"]="green";}
+        else{
+			document.getElementById("errs").style["display"] ="block"; 
+			document.getElementById("em_l").style["color"]="red";
+			document.getElementById("pd_l").style["color"]="red";}
+
+      });  		  
+});
+
+$('#register').click(function(){
+	  const firstname = $("#inputFirstName").val();
+	  const lastname=	$("#inputLastName").val();
+	  const email = $("#inputEmail").val();
+      const password = $("#inputPassword").val();
+	  const c_password= $("#inputPassword_Comfirm").val();
+	  if(checkIfEmailInString(email)){
+	  if( ((password!="" && c_password!="")&& password==(c_password)) && (email!="" && (firstname!="" && lastname!="") ))
+	  {
+      $.post("/register", ({ firstname: firstname, lastname: lastname, email: email, password: c_password }), function(data, status) {
+		if (data){
+          window.open("/login","_self");
+		  document.getElementById("err").style["display"] ="none"; 
+		  document.getElementById("em").style["color"]="green";
+        }else{
+		  document.getElementById("err").style["display"] ="block"; 
+		  document.getElementById("em").style["color"]="red";}
+		});
+	  }
+	  }else
+	  {
+		  document.getElementById("em").style["color"]="red";
+	  }
+});
+
+function checkIfEmailInString(text) { 
+    var re = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+	return re.test(text);
+}
   /* END create event*/
 

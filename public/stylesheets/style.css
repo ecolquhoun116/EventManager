@@ -1,8 +1,16 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-
+  background-color: #f8f9fa!important;
 }
 
 a {
   color: #00B7FF;
+}
+
+#info {
+  width: 100%;
+}
+
+.badge-title {
+
+  color: #2c3e50!important;
 }
