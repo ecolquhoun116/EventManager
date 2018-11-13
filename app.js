@@ -23,7 +23,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret: 'wssurams',resave: true,saveUninitialized: true,cookie: { maxAge: new Date(Date.now() + 2 * 60 * 1000) }}));
+app.use(session( {secret: 'wssurams',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    secure: false,
+    maxAge: 10 * 60 * 1000
+  },
+  rolling: true
+}));
 
 
 app.use('/', index);

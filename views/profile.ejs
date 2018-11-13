@@ -5,8 +5,10 @@
 <% include ./partials/navbar %>
 
   <body>
+  <div class="bg-white rounded shadow-sm p-5">
+
       <!-- We render title passed by parameter in routes/index.js -->
-      <h1><%= title %></h1>
+      <h2 class="border-bottom border-gray pb-2 mb-0 text-xl-left"><span class="badge-title p-3"><%= title %></span></h2>
       
     <div class="container">
     <div class="row">
@@ -22,13 +24,13 @@
     </div>
       <div class="row mt-5">
         <div class="col-sm">
-           <h2>My created events</h2>
+            <h3 class="border-bottom border-gray pb-2 mb-0 text-xl-left"><span class="badge-title p-3">My created events</span></h3>
            <% createdEvent.forEach(function(event) { %>
                 <li><%= event.title %></li>
             <% }); %>
         </div>
         <div class="col-sm">
-           <h2>My participating events</h2>
+        <h3 class="border-bottom border-gray pb-2 mb-0 text-xl-left"><span class="badge-title p-3">My participating events</span></h3>
            <% participateEvent.forEach(function(event) { %>
                 <li><%= event.title %></li>
             <% }); %>
@@ -37,7 +39,7 @@
       </div>
     </div>
 
-    
+    </div>
   </body>
 
   <!-- We add the small piece of template footer -->
