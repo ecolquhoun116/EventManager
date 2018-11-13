@@ -3,11 +3,7 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
   host: "localhost",
   user: "root",
-<<<<<<< HEAD
   password: "MySQL",
-=======
-  password: "wssurams",
->>>>>>> 8f8645213cc1392afc4496735c4833aab7931757
   database: "event_scheduler",
   insecureAuth : true
   

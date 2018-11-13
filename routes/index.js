@@ -17,9 +17,7 @@ router.get('/', function(req, res, next) {
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Event Manager' });
 });
-router.get('/feed', isLoged, function(req, res, next) {
-  res.render('feed', { title: 'Event Manager-feed' });
-});
+
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 router.get('/create-event', isLoged, function(req, res, next) {
   // console.log( db.getAllEvents()); return all events in an array
@@ -139,14 +137,12 @@ router.get('/logout', function(req, res, next) {
 });
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-router.get('/view-events', function(req, res, next) {
+router.get('/feed', function(req, res, next) {
   db.getAllEvents().then( function (dbEvents) {
       res.render('feed', { title: 'View Events', eachEvent : dbEvents});
   });
 });
 
-<<<<<<< HEAD
-=======
 function isLoged(req, res, next) {
   if ( !(req.session && req.session.user)) {
     res.redirect('/login');
@@ -154,6 +150,5 @@ function isLoged(req, res, next) {
     next();
   }
 }
->>>>>>> 8f8645213cc1392afc4496735c4833aab7931757
 
 module.exports = router;
