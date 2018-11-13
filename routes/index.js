@@ -39,7 +39,7 @@ router.get('/profile', function(req, res, next) {
         res.render('profile', { title: 'My profile', user : user, createdEvent : result_created, participateEvent : result_participate });
       })
     })
-  }).catch();
+  });
 });
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
