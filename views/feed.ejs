@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <!-- We add the small piece of template header -->
@@ -10,3 +11,34 @@
   <% include ./partials/footer %>
 
 </html>
+=======
+<!DOCTYPE html>
+<html>
+<!-- We add the small piece of template header -->
+<% include ./partials/header %>
+<% include ./partials/navbar %>
+<div>
+  <div class="col-sm">
+    <h2>Events for You!</h2>
+    <% eachEvent.forEach(function(event) { %>
+      <div class="card mt-2" style="width: 18rem;">
+          <img class="card-img-top" src="..." alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title"><%= event.title %></h5>
+            <p class="card-text"><%= event.location %></p>
+            <p class="card-text"><%= event.description %></p>
+            <p class="card-text"><%= event.date_start %></p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      <div>
+     <% }); %>
+ </div>
+
+</div>
+  <!-- We add the small piece of template footer -->
+
+  <% include ./partials/footer %>
+
+</html>
+>>>>>>> d82603acc86ec737b8ef305392fc5d2fa582013d
