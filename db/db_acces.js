@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "MySQL",
+  password: "wssurams",
   database: "event_scheduler",
   insecureAuth : true
   
@@ -17,9 +17,30 @@ var db = mysql.createConnection({
 function insertEvent(event, orgId) {
   return new Promise((resolve, reject) => {
     let insertedEvent;
-    var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype, orgid) \
+	let eventType;
+	console.log(event.type);
+	if(event.type=="Music")
+	{
+		eventType="/images/music.png";
+	}else if(event.type=="Sport Event")
+	{
+		eventType="/images/sports.png";
+	}else if(event.type=="Food Event")
+	{
+		eventType="/images/food.png";
+	}else if(event.type=="Party")
+	{
+		eventType="/images/party.png";
+	}else if(event.type=="Festival")
+	{
+		eventType="/images/festival.png";
+	}else
+	{
+		eventType="/images/other.png";
+	}
+    var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype, image,tid) \
     values( '"+ event.title + "', '"+ event.description + "', '" + event.date_start + "', '"+ event.date_end + "',\
-    '" + event.location + "', '" + event.note +"', '" + event.public + "', '"+ event.type + "', '"+ orgId+"');";
+    '" + event.location + "', '" + event.note +"', '" + event.public + "', '"+ event.type + "','"+eventType+"','"+ orgId+"');";
   
     db.query(sql, function (err, result) {
       if (err) throw err;
@@ -133,7 +154,7 @@ function userLogin(event)
 function getMyCreatedEvents(orgId)
 {
 	return new Promise((resolve, reject) => {
-	var sql = "select * from event e where orgid = " + orgId;
+	var sql = "select * from event e where tid = " + orgId;
     db.query(sql, function (err, result, fields) {
       if (err) throw err;      
       resolve(result);
