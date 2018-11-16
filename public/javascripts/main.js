@@ -48,7 +48,7 @@ $('#submit_event').click(function() {
   }
 });
 
-/*Login Authentication*/
+/*Login Authentication */
 $('#login').click(function(){
 	  const email = $("#inputEmail1").val();
       const password = $("#inputPassword").val();
