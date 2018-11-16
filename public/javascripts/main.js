@@ -33,7 +33,6 @@ $('#submit_event').click(function() {
     'note' : $('#note').val(),
     'emails' : $("#email_added").tagsinput('items')
   }
-  
   if ( event.title === "" && event.date_start ) {
     $.alert({
         title: 'Wait !',

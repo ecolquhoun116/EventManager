@@ -17,30 +17,10 @@ var db = mysql.createConnection({
 function insertEvent(event, orgId) {
   return new Promise((resolve, reject) => {
     let insertedEvent;
-	let eventType;
-	console.log(event.type);
-	if(event.type=="Music")
-	{
-		eventType="/images/music.png";
-	}else if(event.type=="Sport Event")
-	{
-		eventType="/images/sports.png";
-	}else if(event.type=="Food Event")
-	{
-		eventType="/images/food.png";
-	}else if(event.type=="Party")
-	{
-		eventType="/images/party.png";
-	}else if(event.type=="Festival")
-	{
-		eventType="/images/festival.png";
-	}else
-	{
-		eventType="/images/other.png";
-	}
-    var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype, image,tid) \
+    console.log(event);
+    var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype, orgid) \
     values( '"+ event.title + "', '"+ event.description + "', '" + event.date_start + "', '"+ event.date_end + "',\
-    '" + event.location + "', '" + event.note +"', '" + event.public + "', '"+ event.type + "','"+eventType+"','"+ orgId+"');";
+    '" + event.location + "', '" + event.note +"', '" + event.public + "', '"+ event["type[]"] + "', '"+ orgId+"');";
   
     db.query(sql, function (err, result) {
       if (err) throw err;
@@ -154,7 +134,7 @@ function userLogin(event)
 function getMyCreatedEvents(orgId)
 {
 	return new Promise((resolve, reject) => {
-	var sql = "select * from event e where tid = " + orgId;
+	var sql = "select * from event e where orgid = " + orgId;
     db.query(sql, function (err, result, fields) {
       if (err) throw err;      
       resolve(result);
