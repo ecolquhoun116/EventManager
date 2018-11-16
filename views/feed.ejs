@@ -3,40 +3,54 @@
 <!-- We add the small piece of template header -->
 <% include ./partials/header %>
 <% include ./partials/navbar %>
-<div>
-  <div class="col-sm">
+<div id="feeds" email="<%= email %>">
     <h2>Events for You!</h2>
-    <% eachEvent.forEach(function(event) { %>
-      <div class="card mt-2" style="width: 18rem;">
-      <% if (event.etype == "music") { %>
-        <img class="card-img-top" src="/images/music.png" alt="Card image cap">
+    <% eachEvent.forEach(function(event, index) { %>
+      <% if (index % 3 == 0 ) { %>
+        <div class="row mt-4">
       <% } %>
-      <% if (event.etype == "sport") { %>
-        <img class="card-img-top" src="/images/sport.png" alt="Card image cap">
-      <% } %>
-      <% if (event.etype == "food") { %>
-        <img class="card-img-top" src="/images/food.png" alt="Card image cap">
-      <% } %>
-      <% if (event.etype == "party") { %>
-        <img class="card-img-top" src="/images/party.png" alt="Card image cap">
-      <% } %>
-      <% if (event.etype == "festival") { %>
-        <img class="card-img-top" src="/images/festival.png" alt="Card image cap">
-      <% } %>
-      <% if (event.etype == "other") { %>
-        <img class="card-img-top" src="/images/other.png" alt="Card image cap">
-      <% } %>
-          <div class="card-body">
-            <h5 class="card-title"><%= event.title %></h5>
-            <p class="card-text"><%= event.location %></p>
-            <p class="card-text"><%= event.description %></p>
-            <p class="card-text"><%= event.date_start %></p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div class="col-sm">
+
+        <div class="card mt-2" style="width: 18rem;">
+          <% if (event.etype == "music") { %>
+            <img class="card-img-top" src="/images/music.png" alt="Card image cap">
+          <% } %>
+          <% if (event.etype == "sport") { %>
+            <img class="card-img-top" src="/images/sport.png" alt="Card image cap">
+          <% } %>
+          <% if (event.etype == "food") { %>
+            <img class="card-img-top" src="/images/food.png" alt="Card image cap">
+          <% } %>
+          <% if (event.etype == "party") { %>
+            <img class="card-img-top" src="/images/party.png" alt="Card image cap">
+          <% } %>
+          <% if (event.etype == "festival") { %>
+            <img class="card-img-top" src="/images/festival.png" alt="Card image cap">
+          <% } %>
+          <% if (event.etype == "other") { %>
+            <img class="card-img-top" src="/images/other.png" alt="Card image cap">
+          <% } %>
+            <div class="card-body">
+              <h5 class="card-title"><%= event.title %></h5>
+              <p class="card-text"><%= event.location %></p>
+              <p class="card-text"><%= event.description %></p>
+              <p class="card-text"><%= event.date_start %></p>
+              
+              <% if (participateEvent.some( (elt) => {return elt.tid == event.tid;}))   { %>
+                <a join="y" id_event="<%= event.tid %>" class="join-event btn btn-info">Un-Join</a>
+              <% } else { %>
+                <a join="n" id_event="<%= event.tid %>" class="join-event btn btn-primary">Join Event</a>
+              <% } %>
+              
+            </div>
           </div>
         </div>
-      <div>
-     <% }); %>
- </div>
+      <% if (index % 3 == (3-1) ) { %>
+        </div>
+      <% } %>
+    <% }); %>
+     
+</div>
 
 </div>
   <!-- We add the small piece of template footer -->

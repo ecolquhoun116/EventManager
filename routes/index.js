@@ -45,7 +45,21 @@ router.get('/profile', isLoged, function(req, res, next) {
     })
   });
 });
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+router.post('/join-event', isLoged, function(req, res, next) {
+  let event = req.body;
+  let sess = req.session;
+  console.log(event);
+  try {
+    db.insertJoin(event.id, event.email);
+    
+  } catch (e) {
+    console.log(e);
+  }
+  
+  res.render('api', { title: 'Event Manager' });
+});
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.post('/submit-event', isLoged, function(req, res, next) {
@@ -138,8 +152,17 @@ router.get('/logout', function(req, res, next) {
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.get('/feed', function(req, res, next) {
-  db.getAllEvents().then( function (dbEvents) {
-      res.render('feed', { title: 'View Events', eachEvent : dbEvents});
+  let sess = req.session;
+  let email = "";
+  if(sess.email) { 
+    email = sess.email;
+  }
+  db.getUserByEmail(email).then((user) => {
+    db.getAllEvents().then( function (dbEvents) {
+      db.getParticipatingEvent(user.uid).then( function (participateEvent) {
+        res.render('feed', { title: 'View Events', eachEvent : dbEvents, email :  sess.email, participateEvent : participateEvent});
+      });
+   });
   });
 });
 

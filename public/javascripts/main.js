@@ -48,6 +48,35 @@ $('#submit_event').click(function() {
   }
 });
 
+/* Join event*/
+$('.join-event').click(function() {
+  
+  var event = {
+    'id' : $(this).attr('id_event'),
+    'email' : $("#feeds").attr('email')
+  }
+  console.log(event);
+  $.post('join-event', event, function(data) {
+    
+    
+  }).then(()=> {
+    if ($(this).attr('join') == 'n' ) {
+      $(this).attr('class', 'join-event btn btn-info');
+      $(this).text('Un-Join');
+      $(this).attr('join', 'y');
+      $.alert({
+        title: 'Have fun !',
+        content: 'You joined the event :)',
+      });
+    } else {
+      $(this).attr('class', 'join-event btn btn-primary');
+      $(this).text('Join Event');
+      $(this).attr('join', 'n');
+    }
+
+  });
+});
+
 /*Login Authentication */
 $('#login').click(function(){
 	  const email = $("#inputEmail1").val();

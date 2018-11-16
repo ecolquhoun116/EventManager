@@ -45,24 +45,53 @@ function getAllEvents() {
 
 function insertInvitate(id_event, email, organizer_id = -1) {
 
+
   let insertedInvitation;
   getUserByEmail(email).then((user) => {
+      if (  user && user.uid ) {
+        var sql = "insert into invited (Useruid, Eventtid, organizer_id) \
+        values( '"+ user.uid  + "', '"+ id_event + "', '" + organizer_id + "');";
+      
+        db.query(sql, function (err, result) {
+          if (err) throw err;
+          insertedInvitation = result  ? result.insertId : -1;
+          console.log("DB: 1 invited inserted " + insertedInvitation);
+      
+        });
+      } else console.log("DB: invitation insertion failed !");
+    });
+}
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    if ( user && user.uid ) {
-      var sql = "insert into invited (Useruid, Eventtid, organizer_id) \
-      values( '"+ user.uid  + "', '"+ id_event + "', '" + organizer_id + "');";
-    
+function insertJoin(id_event, email ) {
+
+  let insertedInvitation;
+  getUserByEmail(email).then((user) => {
+    getParticipatingEvent(user.uid).then((eventsParticipate) => {
+      let exist = eventsParticipate.some((events) => { return events.tid == id_event});
+      if ( !exist &&  user && user.uid ) {
+        var sql = "insert into participate (Useruid, Eventtid) \
+        values( '"+ user.uid  + "', '"+ id_event + "');";
+        try {
+          db.query(sql, function (err, result) {
+            if (err) throw err;
+            insertedInvitation = result  ? result.insertId : -1;
+            console.log("DB: 1 participate inserted " + insertedInvitation);
+        
+          });
+
+      } catch (exception) {
+        console.log(exception);
+      }
+    } else if ( exist && user && user.uid){
+      var sql = "delete from participate where ( Useruid ='"+user.uid+"') and ( Eventtid ='"+id_event+"')";
       db.query(sql, function (err, result) {
         if (err) throw err;
-        insertedInvitation = result  ? result.insertId : -1;
-        console.log("DB: 1 invited inserted " + insertedInvitation);
-    
+        console.log("DB: 1 participate deleted " + insertedInvitation);    
       });
     } else console.log("DB: invitation insertion failed !");
+    });
   });
-
-  
-
 }
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -164,5 +193,6 @@ module.exports = {
   getUserByEmail,
   getMyCreatedEvents,
   getParticipatingEvent,
-  userLogin
+  userLogin,
+  insertJoin
 }
