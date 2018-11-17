@@ -14,3 +14,7 @@ a {
 
   color: #2c3e50!important;
 }
+
+.card-img-top {
+  width: 50%!important;
+}

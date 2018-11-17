@@ -5,49 +5,65 @@
 <% include ./partials/navbar %>
 <div id="feeds" email="<%= email %>">
     <h2>Events for You!</h2>
+    <select id="filter-feed-type" class="form-control form-control-sm">
+      <option value="all">All</option>
+      <option value="music">Music</option>
+      <option value="sport">Sport Event</option>
+      <option value="food">Food Event</option>
+      <option value="party">Party</option>
+      <option value="festival">Festival</option>
+      <option value="other">Other</option>    
+    </select>
     <% eachEvent.forEach(function(event, index) { %>
-      <% if (index % 3 == 0 ) { %>
-        <div class="row mt-4">
-      <% } %>
-        <div class="col-sm">
+      
+        <div class="card-deck">
 
-        <div class="card mt-2" style="width: 18rem;">
-          <% if (event.etype == "music") { %>
-            <img class="card-img-top" src="/images/music.png" alt="Card image cap">
-          <% } %>
-          <% if (event.etype == "sport") { %>
-            <img class="card-img-top" src="/images/sport.png" alt="Card image cap">
-          <% } %>
-          <% if (event.etype == "food") { %>
-            <img class="card-img-top" src="/images/food.png" alt="Card image cap">
-          <% } %>
-          <% if (event.etype == "party") { %>
-            <img class="card-img-top" src="/images/party.png" alt="Card image cap">
-          <% } %>
-          <% if (event.etype == "festival") { %>
-            <img class="card-img-top" src="/images/festival.png" alt="Card image cap">
-          <% } %>
-          <% if (event.etype == "other") { %>
-            <img class="card-img-top" src="/images/other.png" alt="Card image cap">
-          <% } %>
-            <div class="card-body">
-              <h5 class="card-title"><%= event.title %></h5>
+
+        <div class="card card-events mt-3 p-5" data="<%= event.etype %>">
+          <div class="row ">
+            <div class="col-md-4">
+            <% if (event.etype == "music") { %>
+              <img class="card-img-top" src="/images/music.png" alt="Card image cap">
+            <% } %>
+            <% if (event.etype == "sport") { %>
+              <img class="card-img-top" src="/images/sport.png" alt="Card image cap">
+            <% } %>
+            <% if (event.etype == "food") { %>
+              <img class="card-img-top" src="/images/food.png" alt="Card image cap">
+            <% } %>
+            <% if (event.etype == "party") { %>
+              <img class="card-img-top" src="/images/party.png" alt="Card image cap">
+            <% } %>
+            <% if (event.etype == "festival") { %>
+              <img class="card-img-top" src="/images/festival.png" alt="Card image cap">
+            <% } %>
+            <% if (event.etype == "other") { %>
+              <img class="card-img-top" src="/images/other.png" alt="Card image cap">
+            <% } %>
+          </div>
+          <div class="col-md-8 px-3">
+            <div class="card-block px-3">
+              <h4 class="card-title"><%= event.title %></h4>
+              <p class="card-text font-weight-light"><em><%= event.date_start %></em></p>
               <p class="card-text"><%= event.location %></p>
               <p class="card-text"><%= event.description %></p>
-              <p class="card-text"><%= event.date_start %></p>
-              
+              <p class="card-text"><%= event.notes %></p>
+
               <% if (participateEvent.some( (elt) => {return elt.tid == event.tid;}))   { %>
                 <a join="y" id_event="<%= event.tid %>" class="join-event btn btn-info">Un-Join</a>
               <% } else { %>
                 <a join="n" id_event="<%= event.tid %>" class="join-event btn btn-primary">Join Event</a>
-              <% } %>
-              
+              <% } %>            
             </div>
           </div>
+
         </div>
-      <% if (index % 3 == (3-1) ) { %>
-        </div>
-      <% } %>
+      </div>
+    </div>
+
+
+       
+      
     <% }); %>
      
 </div>

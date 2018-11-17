@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require("../db/db_acces");
 var mailer = require('../mail/mail');
-
+var moment = require('moment');
 
 /* GET home page. 
 When the user go on the root on the website
@@ -156,18 +156,33 @@ router.get('/feed', function(req, res, next) {
   let email = "";
   if(sess.email) { 
     email = sess.email;
+  
+    db.getUserByEmail(email).then((user) => {
+      db.getAllEvents().then( function (dbEvents) {
+        let today = moment();        
+        var events = dbEvents.filter(element => today.isSameOrAfter( moment(element.date_start)) == false );
+        events = events.map((element) => {
+            element.date_start = moment(element.date_start).format( "dddd, MMMM Do YYYY // h:mm a");
+            return element;
+        });
+
+        db.getParticipatingEvent(user.uid).then( function (participateEvent) {
+          res.render('feed', { title: 'View Events', 
+            eachEvent : events, 
+            email :  sess.email, 
+            participateEvent : participateEvent
+          });
+        });
+     });
+    });
+  } else {
+    res.redirect('/login');
   }
-  db.getUserByEmail(email).then((user) => {
-    db.getAllEvents().then( function (dbEvents) {
-      db.getParticipatingEvent(user.uid).then( function (participateEvent) {
-        res.render('feed', { title: 'View Events', eachEvent : dbEvents, email :  sess.email, participateEvent : participateEvent});
-      });
-   });
-  });
 });
 
 function isLoged(req, res, next) {
-  if ( !(req.session && req.session.user)) {
+  console.log(req.session.email);
+  if ( !(req.session && req.session.email)) {
     res.redirect('/login');
   } else {
     next();

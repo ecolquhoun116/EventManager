@@ -25,15 +25,85 @@
       <div class="row mt-5">
         <div class="col-sm">
             <h3 class="border-bottom border-gray pb-2 mb-0 text-xl-left"><span class="badge-title p-3">My created events</span></h3>
-           <% createdEvent.forEach(function(event) { %>
-                <li><%= event.title %></li>
-            <% }); %>
+
+
+            <% createdEvent.forEach(function(event, index) { %>
+              <div class="row mt-4">
+              <div class="col-sm">
+
+              <div class="card mt-2" style="width: 18rem;">
+                <% if (event.etype == "music") { %>
+                  <img class="card-img-top pl-2 w-75" src="/images/music.png" alt="Card image cap">
+                <% } %>
+                <% if (event.etype == "sport") { %>
+                  <img class="card-img-top pl-2 w-75" src="/images/sport.png" alt="Card image cap">
+                <% } %>
+                <% if (event.etype == "food") { %>
+                  <img class="card-img-top pl-2 w-75" src="/images/food.png" alt="Card image cap">
+                <% } %>
+                <% if (event.etype == "party") { %>
+                  <img class="card-img-top pl-2 w-75" src="/images/party.png" alt="Card image cap">
+                <% } %>
+                <% if (event.etype == "festival") { %>
+                  <img class="card-img-top pl-2 w-75" src="/images/festival.png" alt="Card image cap">
+                <% } %>
+                <% if (event.etype == "other") { %>
+                  <img class="card-img-top pl-2 w-75" src="/images/other.png" alt="Card image cap">
+                <% } %>
+                  <div class="card-body">
+                    <h5 class="card-title"><%= event.title %></h5>
+                    <p class="card-text"><%= event.location %></p>
+                    <p class="card-text"><%= event.description %></p>
+                    <p class="date-event card-text"><%= event.date_start %></p>
+                    
+                
+                    
+                  </div>
+                </div>
+              </div>
+              </div>
+          <% }); %>
         </div>
         <div class="col-sm">
         <h3 class="border-bottom border-gray pb-2 mb-0 text-xl-left"><span class="badge-title p-3">My participating events</span></h3>
-           <% participateEvent.forEach(function(event) { %>
-                <li><%= event.title %></li>
-            <% }); %>
+          
+
+            <% participateEvent.forEach(function(event, index) { %>
+              <div class="row mt-4">
+              <div class="col-sm">
+
+              <div class="card mt-2" style="width: 18rem;">
+                <% if (event.etype == "music") { %>
+                  <img class="card-img-top" src="/images/music.png" alt="Card image cap">
+                <% } %>
+                <% if (event.etype == "sport") { %>
+                  <img class="card-img-top" src="/images/sport.png" alt="Card image cap">
+                <% } %>
+                <% if (event.etype == "food") { %>
+                  <img class="card-img-top" src="/images/food.png" alt="Card image cap">
+                <% } %>
+                <% if (event.etype == "party") { %>
+                  <img class="card-img-top" src="/images/party.png" alt="Card image cap">
+                <% } %>
+                <% if (event.etype == "festival") { %>
+                  <img class="card-img-top" src="/images/festival.png" alt="Card image cap">
+                <% } %>
+                <% if (event.etype == "other") { %>
+                  <img class="card-img-top" src="/images/other.png" alt="Card image cap">
+                <% } %>
+                  <div class="card-body">
+                    <h5 class="card-title"><%= event.title %></h5>
+                    <p class="card-text"><%= event.location %></p>
+                    <p class="card-text"><%= event.description %></p>
+                    <p class="date-event card-text"><%= event.date_start %></p>
+                    
+                
+                    
+                  </div>
+                </div>
+              </div>
+              </div>
+          <% }); %>
         </div>
         
       </div>

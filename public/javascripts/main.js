@@ -14,6 +14,30 @@ $(document).ready(function() {
   });
   /* END create event*/
 
+  // Filter
+  $("#filter-feed-type").change(() => {
+    let type = $("#filter-feed-type").val();
+    let type_event;
+    // $.each(".card-events", (i, element) => {     
+    
+    for(i = 0; i < $(".card-events").length; i++) { 
+      type_event = $(".card-events:eq(" + i  + ")").attr("data");
+      if (  type != "all" && type_event != type) {
+        $(".card-events:eq(" + i  + ")").hide();
+      } else {
+        $(".card-events:eq(" + i  + ")").show();
+      }
+    }
+    // console.log(type); 
+    //   if ( $(this).attr("data") == type ) {
+        
+    //     $(this).hide();
+    //   } else {
+    //     $(this).show();
+
+    //   }
+    // });
+  });
 });
 
 
