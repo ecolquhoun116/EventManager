@@ -1,10 +1,10 @@
 var mysql = require('mysql');
 
 var db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "wssurams",
-  database: "event_scheduler",
+  host: "us-cdbr-iron-east-01.cleardb.net",
+  user: "b14dbbb037c751",
+  password: "8dff0205",
+  database: "heroku_b9b56dc76d38df1",
   insecureAuth : true
   
 
