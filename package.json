@@ -6,6 +6,9 @@
     "start": "set NODE_ENV=production && node ./bin/www",
     "dev": "nodemon ./bin/www"
   },
+  "engines": {
+    "node": "8.9.4"
+  },
   "dependencies": {
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
