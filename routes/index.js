@@ -77,8 +77,8 @@ router.post('/submit-event', isLoged, function(req, res, next) {
   try {
     db.insertEvent(event, user.uid).then((id_event) => {
       for (let i = 0 ; i < emails.length; i++) { 
-        mailer.senEmail(emails[i]);
-        db.insertInvitate(id_event, emails[i]);
+        mailer.senEmail(emails[i], event);
+        db.insertInvitate(id_event, emails[i], user.uid);
       }
     });
   } catch (e) {
@@ -149,6 +149,19 @@ router.get('/logout', function(req, res, next) {
     }
   });
 });
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+router.get('/search',function(req,res){
+  console.log("search " + req.query.key);
+  db.searchEvent(req.query.key).then((result) => {
+    var data=[];
+    for(i=0;i<result.length;i++) {
+      data.push(result[i].title);
+    }
+    res.end(JSON.stringify(data));  
+  }).catch((error) => console.log("error"));    
+
+});
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 router.get('/feed', function(req, res, next) {
@@ -161,18 +174,23 @@ router.get('/feed', function(req, res, next) {
       db.getAllEvents().then( function (dbEvents) {
         let today = moment();        
         var events = dbEvents.filter(element => today.isSameOrAfter( moment(element.date_start)) == false );
+        
         events = events.map((element) => {
             element.date_start = moment(element.date_start).format( "dddd, MMMM Do YYYY // h:mm a");
             return element;
         });
-
-        db.getParticipatingEvent(user.uid).then( function (participateEvent) {
-          res.render('feed', { title: 'View Events', 
-            eachEvent : events, 
-            email :  sess.email, 
-            participateEvent : participateEvent
+        events = events.filter(element => element.public == 1 );
+        db.getInvitedEvent(user.uid).then((privateEvents) => {
+          db.getParticipatingEvent(user.uid).then( function (participateEvent) {
+            res.render('feed', { title: 'View Events', 
+              eachEvent : events, 
+              eachPrivateEvent : privateEvents, 
+              email :  sess.email, 
+              participateEvent : participateEvent
+            });
           });
         });
+        
      });
     });
   } else {

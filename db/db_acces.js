@@ -41,6 +41,17 @@ function getAllEvents() {
     });
   });
 }
+
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+function getInvitedEvent(userId) {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT e.title, e.date_end, e.date_end, e.etype, e.location, e.notes, e.orgid, e.public, e.tid, e.description FROM event e, user u, invited i where i.useruid = u.uid and i.eventtid = e.tid and u.uid = " + userId, function (err, result, fields) {
+      if (err) throw err;
+      resolve(result);
+    });
+  });
+}
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 function insertInvitate(id_event, email, organizer_id = -1) {
@@ -183,16 +194,29 @@ function getParticipatingEvent(userId)
     });
   });
 }
+/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+function searchEvent(eventName)
+{
+	return new Promise((resolve, reject) => {
+	var sql = "select * from event e where e.title like '%" + eventName +"%'";
+    db.query(sql, function (err, result, fields) {
+      if (err) throw err;      
+      resolve(result);
+    });
+  });
+}
 
 
 module.exports = {
   registerUser,
   insertEvent,
   getAllEvents,
+  getInvitedEvent,
   insertInvitate,
   getUserByEmail,
   getMyCreatedEvents,
   getParticipatingEvent,
   userLogin,
-  insertJoin
+  insertJoin,
+  searchEvent
 }

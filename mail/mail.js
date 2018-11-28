@@ -3,7 +3,7 @@ var fs = require('fs');
 var validator = require("email-validator");
  
 
-function senEmail(destination) {
+function senEmail(destination, event) {
     let content;
 
     // check if the email is valid email
@@ -25,8 +25,11 @@ function senEmail(destination) {
                 const mailOptions = {
                     from: 'eventmanager.cs5322@gmail.com',
                     to: destination ? destination : 'eventmanager.cs5322@gmail.com', 
-                    subject: 'Subject of your email',
-                    html: content
+                    subject: 'You have been invited to ' + event.title + ' !',
+                    html: '<html><h1>You have been invited to ' + event.title + ' !</h1> \
+                    <p> comme check on event manager ;)</p>\
+                    <p>You have to log to join the event now !</p>\
+                    <h2>See you soon  8) xoxo</h2>'
                 };
 
                 // Now send email

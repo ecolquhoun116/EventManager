@@ -28,19 +28,26 @@ $(document).ready(function() {
         $(".card-events:eq(" + i  + ")").show();
       }
     }
-    // console.log(type); 
-    //   if ( $(this).attr("data") == type ) {
-        
-    //     $(this).hide();
-    //   } else {
-    //     $(this).show();
-
-    //   }
-    // });
   });
+
+  /* search block*/
+  $( ".autocomplete" ).autocomplete({
+    source:  function(request, response) {
+      $.ajax({
+        url: "http://localhost:3000/search",
+        dataType: "jsonp",
+        data: {
+          searchText: request.term
+        },
+        success: function( data ) {
+          response( data );
+        }
+      });        
+   }
+  }); 
 });
 
-
+$('#private').prop("checked", false);
 /* Create event*/
 $('#submit_event').click(function() {
   let start_date = $('#start_date').datetimepicker('viewDate').format("YYYY-MM-DD hh:mm:ss");
@@ -52,7 +59,7 @@ $('#submit_event').click(function() {
     'date_start' : start_date,
     'date_end' : end_date,
     'location' : $('#location').val(),
-    'public' : $('#private').val() == 'on' ? 1 : 0,
+    'public' : $('#private').prop("checked") == false ? 1 : 0,
     'type' : $('#type').val(),
     'note' : $('#note').val(),
     'emails' : $("#email_added").tagsinput('items')

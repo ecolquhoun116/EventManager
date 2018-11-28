@@ -36,6 +36,7 @@ CREATE TABLE Participate (
 CREATE TABLE Invited (
   Useruid      int(10) NOT NULL, 
   Eventtid     int(10) NOT NULL, 
+  email          varchar(50),
   organizer_id int(10), 
   PRIMARY KEY (Useruid, 
   Eventtid));
