@@ -10,12 +10,30 @@ var db = mysql.createConnection({
 
 });
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+function handleDisconnect(db_connection) {
+  db_connection.on('error', function(err) {
+    if (!err.fatal) {
+      return;
+    }
+
+    if (err.code !== 'PROTOCOL_CONNECTION_LOST') {
+      throw err;
+    }
+
+    console.log('Re-connecting lost connection: ' + err.stack);
+
+    db = mysql.createConnection(db_connection.config);
+    handleDisconnect(db);
+    db.connect();
+  });
+}
 
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 function insertEvent(event, orgId) {
   return new Promise((resolve, reject) => {
+    handleDisconnect(db);
     let insertedEvent;
     console.log(event);
     var sql = "insert into event (title, description, date_start, date_end, location, notes, public, etype, orgid) \
@@ -35,6 +53,7 @@ function insertEvent(event, orgId) {
 
 function getAllEvents() {
   return new Promise((resolve, reject) => {
+    handleDisconnect(db);
     db.query("SELECT * FROM event", function (err, result, fields) {
       if (err) throw err;
       resolve(result);
@@ -46,6 +65,7 @@ function getAllEvents() {
 
 function getInvitedEvent(userId) {
   return new Promise((resolve, reject) => {
+    handleDisconnect(db);
     db.query("SELECT e.title, e.date_end, e.date_end, e.etype, e.location, e.notes, e.orgid, e.public, e.tid, e.description FROM event e, user u, invited i where i.useruid = u.uid and i.eventtid = e.tid and u.uid = " + userId, function (err, result, fields) {
       if (err) throw err;
       resolve(result);
@@ -56,7 +76,7 @@ function getInvitedEvent(userId) {
 
 function insertInvitate(id_event, email, organizer_id = -1) {
 
-
+  handleDisconnect(db);
   let insertedInvitation;
   getUserByEmail(email).then((user) => {
       if (  user && user.uid ) {
@@ -77,6 +97,8 @@ function insertInvitate(id_event, email, organizer_id = -1) {
 function insertJoin(id_event, email ) {
 
   let insertedInvitation;
+  handleDisconnect(db);
+
   getUserByEmail(email).then((user) => {
     getParticipatingEvent(user.uid).then((eventsParticipate) => {
       let exist = eventsParticipate.some((events) => { return events.tid == id_event});
@@ -108,6 +130,7 @@ function insertJoin(id_event, email ) {
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 function getUserByEmail(email) {
+  handleDisconnect(db);
   return new Promise((resolve, reject) => {
     let user;
     let sql = "select * from user where email = '" + email + "'";
@@ -121,8 +144,9 @@ function getUserByEmail(email) {
 }
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-function registerUser(event)
-{
+function registerUser(event) {
+  handleDisconnect(db);
+
 	let email=event.email;
 	return new Promise((resolve, reject) => {
 	userLogin(event).then((hasUser)=>{
@@ -148,9 +172,11 @@ function registerUser(event)
 
     });
 }
-function userLogin(event)
-{
+function userLogin(event){
+
 	return new Promise((resolve, reject) => {
+  handleDisconnect(db);
+
 	let isMember;
 	if(event.email=="" || event.password=="") resolve(false);
 	var sql = "select * from user where email= '"+ event.email +"' and password='"+event.password+"'";
@@ -173,7 +199,10 @@ function userLogin(event)
 
 function getMyCreatedEvents(orgId)
 {
+  
 	return new Promise((resolve, reject) => {
+  handleDisconnect(db);
+
 	var sql = "select * from event e where orgid = " + orgId;
     db.query(sql, function (err, result, fields) {
       if (err) throw err;      
@@ -187,6 +216,8 @@ function getMyCreatedEvents(orgId)
 function getParticipatingEvent(userId)
 {
 	return new Promise((resolve, reject) => {
+  handleDisconnect(db);
+
 	var sql = "select * from event e, participate p where p.eventtid = e.tid and p.useruid = " + userId;
     db.query(sql, function (err, result, fields) {
       if (err) throw err;      
@@ -198,6 +229,8 @@ function getParticipatingEvent(userId)
 function searchEvent(eventName)
 {
 	return new Promise((resolve, reject) => {
+  handleDisconnect(db);
+
 	var sql = "select * from event e where e.title like '%" + eventName +"%'";
     db.query(sql, function (err, result, fields) {
       if (err) throw err;      
